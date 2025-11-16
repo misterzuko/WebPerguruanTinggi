@@ -1,13 +1,720 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>webperguruantinggi</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Universitas Eintio — Modern Redesign</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #f59e0b;
+      --deep-blue: #0ea5e9;
+    }
+
+    * {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+
+    .carousel-item {
+      display: none;
+    }
+
+    .carousel-item.active {
+      display: block;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.9s cubic-bezier(.2, .9, .3, 1);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+    }
+
+    .indicator.active {
+      box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.12);
+    }
+    @media (min-width: 768px) {
+      .dropdown:hover .dropdown-menu {
+        display: block;
+      }
+    }
+  </style>
+</head>
+
+<body class="antialiased bg-slate-50 text-slate-800">
+  <!-- NAVBAR -->
+  <nav class="fixed w-full z-50 top-0">
+    <div class="backdrop-blur-md bg-white/60 border-b border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="h-20 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-sky-600 to-indigo-600 shadow-md">
+              <span class="text-white font-extrabold">UE</span>
+            </div>
+            <div>
+              <h1 class="text-lg font-semibold text-slate-900">Universitas Eintio</h1>
+              <p class="text-xs text-slate-500">Berkarya untuk Bangsa</p>
+            </div>
+          </div>
+
+          <div class="hidden md:flex items-center gap-8">
+            <a class="text-slate-700 hover:text-slate-900 transition font-medium" href="#">Beranda</a>
+
+            <div class="relative dropdown">
+              <button class="flex items-center gap-2 text-slate-700 hover:text-slate-900 font-medium">
+                <span>Tentang</span>
+                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <div
+                class="dropdown-menu absolute right-0 mt-3 hidden w-56 bg-white rounded-xl shadow-lg py-2 border border-slate-100">
+                <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-sky-50">Sejarah</a>
+                <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-sky-50">Visi &amp; Misi</a>
+                <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-sky-50">Fasilitas</a>
+              </div>
+            </div>
+
+            <a class="text-slate-700 hover:text-slate-900 transition font-medium" href="#">Informasi</a>
+            <a class="text-slate-700 hover:text-slate-900 transition font-medium" href="#">Admisi</a>
+
+            <a href="#"
+              class="inline-flex items-center gap-2 bg-amber-400 text-slate-900 px-4 py-2 rounded-lg font-semibold hover:bg-amber-500 transition">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2">
+                </path>
+              </svg>
+              Portal
+            </a>
+          </div>
+
+          <!-- mobile menu button -->
+          <div class="md:hidden">
+            <button id="mobileToggle" class="p-2 rounded-md bg-white/40 backdrop-blur-sm shadow-sm">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                </path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- mobile menu (hidden by default) -->
+      <div id="mobileMenu" class="md:hidden hidden border-t border-slate-100 bg-white/70 backdrop-blur-sm">
+        <div class="px-4 py-3 space-y-2">
+          <a href="#" class="block text-slate-700 font-medium">Beranda</a>
+          <a href="#" class="block text-slate-700 font-medium">Tentang</a>
+          <a href="#" class="block text-slate-700 font-medium">Informasi</a>
+          <a href="#" class="block text-slate-700 font-medium">Admisi</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CAROUSEL -->
+  <header class="relative h-screen mt-20">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="carousel-item active h-full absolute inset-0 bg-cover bg-center"
+        style="background-image:url('https://images.unsplash.com/photo-1574958269340-fa927503f3dd?w=1600');">
+        <div class="absolute inset-0 bg-gradient-to-r from-indigo-900/80 via-sky-700/60 to-transparent"></div>
+
+        <div class="relative h-full flex items-center">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl fade-in">
+              <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">Wujudkan Masa Depan <span
+                  class="text-amber-400">Cemerlang</span></h1>
+              <p class="text-lg text-slate-200 mb-8">Bergabunglah bersama ribuan mahasiswa yang mengembangkan potensi di
+                Universitas Eintio.</p>
+
+              <div class="flex gap-4 flex-wrap">
+                <a href="#"
+                  class="inline-flex items-center gap-3 bg-amber-400 text-slate-900 font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-400/30 transition">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2">
+                    </path>
+                  </svg>
+                  Daftar Sekarang
+                </a>
+
+                <a href="#"
+                  class="inline-flex items-center gap-3 border border-sky-300 text-white/90 px-5 py-3 rounded-lg font-semibold hover:bg-sky-600/20 transition">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 7v4a1 1 0 001 1h3m10 0h3a1 1 0 001-1V7M4 7V5a1 1 0 011-1h2m10 0h2a1 1 0 011 1v2"></path>
+                  </svg>
+                  Explore Riset
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item h-full absolute inset-0 bg-cover bg-center"
+        style="background-image:url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600');">
+        <div class="absolute inset-0 bg-gradient-to-r from-indigo-900/80 via-sky-700/60 to-transparent"></div>
+
+        <div class="relative h-full flex items-center">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl fade-in">
+              <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">Pendidikan Berkualitas & Karier <span
+                  class="text-amber-400"> Terjamin</span></h1>
+              <p class="text-lg text-slate-200 mb-8">Setiap lulusan membawa cerita, dan kami siap membantumu menuliskan bab berikutnya.</p>
+
+              <div class="flex gap-4 flex-wrap">
+                <a href="#"
+                  class="inline-flex items-center gap-3 bg-amber-400 text-slate-900 font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-400/30 transition">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2">
+                    </path>
+                  </svg>
+                  Daftar Sekarang
+                </a>
+                <a href="#"
+                  class="inline-flex items-center gap-3 border border-sky-300 text-white/90 px-5 py-3 rounded-lg font-semibold hover:bg-sky-600/20 transition">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 7v4a1 1 0 001 1h3m10 0h3a1 1 0 001-1V7M4 7V5a1 1 0 011-1h2m10 0h2a1 1 0 011 1v2"></path>
+                  </svg>
+                  Explore Alumni
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item h-full absolute inset-0 bg-cover bg-center"
+        style="background-image:url('https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1600');">
+        <div class="absolute inset-0 bg-gradient-to-r from-indigo-900/80 via-sky-700/60 to-transparent"></div>
+
+        <div class="relative h-full flex items-center">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl fade-in">
+              <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">Kampus Modern dengan Suasana Belajar yang<span
+                  class="text-amber-400"> Menyenangkan</span></h1>
+              <p class="text-lg text-slate-200 mb-8">Dirancang untuk mendorong produktivitas, kreativitas, dan interaksi positif.</p>
+
+              <div class="flex gap-4 flex-wrap">
+                <a href="#"
+                  class="inline-flex items-center gap-3 bg-amber-400 text-slate-900 font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-400/30 transition">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2">
+                    </path>
+                  </svg>
+                  Daftar Sekarang
+                </a>
+
+                <a href="#"
+                  class="inline-flex items-center gap-3 border border-sky-300 text-white/90 px-5 py-3 rounded-lg font-semibold hover:bg-sky-600/20 transition">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 7v4a1 1 0 001 1h3m10 0h3a1 1 0 001-1V7M4 7V5a1 1 0 011-1h2m10 0h2a1 1 0 011 1v2"></path>
+                  </svg>
+                  Explore Kehidupan Kampus
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- controls -->
+    <button onclick="prevSlide()"
+      class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white p-3 rounded-full shadow-sm backdrop-blur-sm">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
+
+    <button onclick="nextSlide()"
+      class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white p-3 rounded-full shadow-sm backdrop-blur-sm">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
+
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
+      <button onclick="goToSlide(0)" class="indicator w-3 h-3 bg-white rounded-full active"></button>
+      <button onclick="goToSlide(1)" class="indicator w-3 h-3 bg-white/50 rounded-full"></button>
+      <button onclick="goToSlide(2)" class="indicator w-3 h-3 bg-white/50 rounded-full"></button>
+    </div>
+  </header>
+
+  <!-- PENCAPAIAN -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-2">Pencapaian Terbaru</h2>
+        <p class="text-slate-600">Prestasi gemilang yang menunjukkan kualitas dan komitmen kami.</p>
+      </div>
+
+      <div class="grid gap-8 md:grid-cols-3">
+        <!-- card -->
+        <article class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition">
+          <div class="relative h-80 rounded-2xl overflow-hidden">
+            <img src="https://plus.unsplash.com/premium_photo-1682974403683-591557aa631b?w=1200" alt="Akreditasi"
+              class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/80 via-indigo-700/40 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center shadow-md">
+                  <svg class="w-6 h-6 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"></path>
+                  </svg>
+                </div>
+                <span class="text-sm font-semibold text-amber-300 bg-amber-900/10 px-3 py-1 rounded-full">Nov
+                  2025</span>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-2">Akreditasi Unggul</h3>
+              <p class="text-slate-100/80 mb-4">Meraih akreditasi unggul untuk program-program unggulan kami.</p>
+              <a href="#"
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition">Lebih
+                Lanjut →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- card -->
+        <article class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition">
+          <div class="relative h-80 rounded-2xl overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1532619187608-e5375cab36aa?w=1200" alt="Hibah"
+              class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/80 via-indigo-700/40 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 rounded-full bg-sky-500 flex items-center justify-center shadow-md">
+                  <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2"></path>
+                  </svg>
+                </div>
+                <span class="text-sm font-semibold text-sky-200 bg-sky-900/10 px-3 py-1 rounded-full">Okt 2025</span>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-2">Hibah Penelitian</h3>
+              <p class="text-slate-100/80 mb-4">Hibah penelitian untuk pengembangan riset kolaboratif.</p>
+              <a href="#"
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition">Lebih
+                Lanjut →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- card -->
+        <article class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition">
+          <div class="relative h-80 rounded-2xl overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200" alt="Kompetisi"
+              class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/80 via-indigo-700/40 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 rounded-full bg-violet-500 flex items-center justify-center shadow-md">
+                  <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12l5 5L20 7"></path>
+                  </svg>
+                </div>
+                <span class="text-sm font-semibold text-violet-200 bg-violet-900/10 px-3 py-1 rounded-full">Sep
+                  2025</span>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-2">Juara Kompetisi</h3>
+              <p class="text-slate-100/80 mb-4">Prestasi internasional yang membanggakan dari tim mahasiswa.</p>
+              <a href="#"
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition">Lebih
+                Lanjut →</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- AKREDITASI -->
+  <section class="py-20 bg-gray-900/85">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Akreditasi Fakultas</h2>
+        <p class="text-slate-300">Komitmen kami terhadap standar pendidikan berkualitas</p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+
+        <!-- 1 -->
+        <article class="group glass border border-slate-700 rounded-2xl p-6 shadow-sm hover:shadow-lg transition">
+          <div class="flex items-start justify-between mb-4 gap-4">
+            <div>
+              <h3 class="text-lg font-semibold text-white">Fakultas Teknik</h3>
+              <p class="text-sm text-slate-300 mt-1">8 Program Studi Terakreditasi</p>
+            </div>
+            <span
+              class="px-3 py-1 rounded-full bg-amber-400 text-slate-900 font-semibold text-sm ring-1 ring-amber-500/30">A</span>
+          </div>
+        </article>
+
+        <!-- 2 -->
+        <article class="group glass border border-slate-700 rounded-2xl p-6 shadow-sm hover:shadow-lg transition">
+          <div class="flex items-start justify-between mb-4 gap-4">
+            <div>
+              <h3 class="text-lg font-semibold text-white">Fakultas Ekonomi</h3>
+              <p class="text-sm text-slate-300 mt-1">5 Program Studi Terakreditasi</p>
+            </div>
+            <span
+              class="px-3 py-1 rounded-full bg-amber-400 text-slate-900 font-semibold text-sm ring-1 ring-amber-500/30">A</span>
+          </div>
+        </article>
+
+        <!-- 3 -->
+        <article class="group glass border border-slate-700 rounded-2xl p-6 shadow-sm hover:shadow-lg transition">
+          <div class="flex items-start justify-between mb-4 gap-4">
+            <div>
+              <h3 class="text-lg font-semibold text-white">Fakultas Hukum</h3>
+              <p class="text-sm text-slate-300 mt-1">4 Program Studi Terakreditasi</p>
+            </div>
+            <span
+              class="px-3 py-1 rounded-full bg-amber-400 text-slate-900 font-semibold text-sm ring-1 ring-amber-500/30">A</span>
+          </div>
+        </article>
+
+        <!-- 4 -->
+        <article class="group glass border border-slate-700 rounded-2xl p-6 shadow-sm hover:shadow-lg transition">
+          <div class="flex items-start justify-between mb-4 gap-4">
+            <div>
+              <h3 class="text-lg font-semibold text-white">Fakultas Kedokteran</h3>
+              <p class="text-sm text-slate-300 mt-1">6 Program Studi Terakreditasi</p>
+            </div>
+            <span
+              class="px-3 py-1 rounded-full bg-amber-400 text-slate-900 font-semibold text-sm ring-1 ring-amber-500/30">Unggul</span>
+          </div>
+        </article>
+
+        <!-- 5 -->
+        <article class="group glass border border-slate-700 rounded-2xl p-6 shadow-sm hover:shadow-lg transition">
+          <div class="flex items-start justify-between mb-4 gap-4">
+            <div>
+              <h3 class="text-lg font-semibold text-white">Fakultas Ilmu Komputer</h3>
+              <p class="text-sm text-slate-300 mt-1">7 Program Studi Terakreditasi</p>
+            </div>
+            <span
+              class="px-3 py-1 rounded-full bg-amber-400 text-slate-900 font-semibold text-sm ring-1 ring-amber-500/30">A</span>
+          </div>
+        </article>
+
+        <!-- 6 -->
+        <article class="group glass border border-slate-700 rounded-2xl p-6 shadow-sm hover:shadow-lg transition">
+          <div class="flex items-start justify-between mb-4 gap-4">
+            <div>
+              <h3 class="text-lg font-semibold text-white">Fakultas Pendidikan</h3>
+              <p class="text-sm text-slate-300 mt-1">9 Program Studi Terakreditasi</p>
+            </div>
+            <span
+              class="px-3 py-1 rounded-full bg-amber-400 text-slate-900 font-semibold text-sm ring-1 ring-amber-500/30">A</span>
+          </div>
+        </article>
+
+        <!-- 7 -->
+        <article class="group glass border border-slate-700 rounded-2xl p-6 shadow-sm hover:shadow-lg transition">
+          <div class="flex items-start justify-between mb-4 gap-4">
+            <div>
+              <h3 class="text-lg font-semibold text-white">Fakultas Pertanian</h3>
+              <p class="text-sm text-slate-300 mt-1">6 Program Studi Terakreditasi</p>
+            </div>
+            <span
+              class="px-3 py-1 rounded-full bg-amber-400 text-slate-900 font-semibold text-sm ring-1 ring-amber-500/30">A</span>
+          </div>
+        </article>
+
+        <!-- 8 -->
+        <article class="group glass border border-slate-700 rounded-2xl p-6 shadow-sm hover:shadow-lg transition">
+          <div class="flex items-start justify-between mb-4 gap-4">
+            <div>
+              <h3 class="text-lg font-semibold text-white">Fakultas Psikologi</h3>
+              <p class="text-sm text-slate-300 mt-1">3 Program Studi Terakreditasi</p>
+            </div>
+            <span
+              class="px-3 py-1 rounded-full bg-amber-400 text-slate-900 font-semibold text-sm ring-1 ring-amber-500/30">A</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- KEGIATAN KAMPUS -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-gray-900 mb-4">Kehidupan Kampus yang Menyenangkan</h2>
+        <p class="text-xl text-gray-600">Berbagai aktivitas dan organisasi untuk mengembangkan potensi diri</p>
+      </div>
+
+      <div class="grid md:grid-rows-3">
+        <div class="group relative overflow-hidden aktifitas-group">
+          <img
+            src="https://images.unsplash.com/photo-1530099486328-e021101a494a?&w=1200&h=600&fit=crop&crop=focalpoint&fp-x=0.4&fp-y=0.4&fp-z=1.5"
+            alt="Kegiatan" class="w-full h-40 object-cover group-hover:scale-105 transition duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/80 to-transparent flex items-end">
+            <div class="p-6 text-white">
+              <h3 class="text-2xl font-bold mb-2">Organisasi Mahasiswa</h3>
+              <p class="text-gray-200">50+ UKM dan himpunan mahasiswa yang aktif</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="group relative overflow-hidden aktifitas-group">
+          <img src="https://images.unsplash.com/photo-1741570342439-3ec7d53e5c15?q=1" alt="Kegiatan"
+            class="w-full h-40 object-cover group-hover:scale-105 transition duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/80 to-transparent flex items-end justify-end">
+            <div class="p-6 text-white">
+              <h3 class="text-2xl font-bold mb-2 text-end">Olahraga & Seni</h3>
+              <p class="text-gray-200">Fasilitas olahraga lengkap dan sanggar seni</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="group relative overflow-hidden aktifitas-group">
+          <img src="https://plus.unsplash.com/premium_photo-1661284892176-fd7713b764a6?auto=format" alt="Kegiatan"
+            class="w-full h-40 object-cover group-hover:scale-105 transition duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/80 to-transparent flex items-end">
+            <div class="p-6 text-white">
+              <h3 class="text-2xl font-bold mb-2">Event & Festival</h3>
+              <p class="text-gray-200">Festival tahunan dan seminar internasional</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- TESTIMONIAL ALUMNI -->
+  <section aria-label="Testimoni Alumni" class="py-20 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-2">Apa kata alumni sini?</h2>
+        <p class="text-slate-600 max-w-2xl mx-auto">Cerita singkat dari alumni kami tentang pengalaman kuliah dan
+          perjalanan karier mereka.</p>
+      </div>
+      <div class="md:flex md:items-start md:gap-12 max-w-5xl mx-auto items-center">
+        <div class="flex-shrink-0 mb-8 md:mb-0">
+          <div
+            class="w-40 h-40 md:w-44 md:h-44 rounded-full bg-white flex items-center justify-center overflow-hidden shadow-md">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=faces"
+              alt="Foto alumni" class="w-full h-full object-cover">
+          </div>
+          <div
+            class="absolute -bottom-3 right-3 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md">
+            <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h8m-8 4h6"></path>
+            </svg>
+          </div>
+
+        </div>
+        <div class="flex-1">
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="text-xl md:text-2xl font-semibold text-slate-900">Sujadmiko S.Kom</h3>
+              <p class="text-sm text-slate-500 mt-1">Fakultas Ilmu Komputer | S1 Teknik Informatika</p>
+              <p class="text-sm text-amber-500 font-medium mt-2">Bekerja di PT. Eintio Academy</p>
+            </div>
+            <div class="ml-4">
+              <span
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400 text-slate-900 font-semibold text-sm ring-1 ring-amber-500/30">
+                Alumni
+              </span>
+            </div>
+          </div>
+
+          <blockquote class="mt-6 text-slate-700 text-base md:text-lg leading-relaxed">
+            “Pengalaman di Universitas Eintio membuka banyak pintu untuk karier saya. Kurikulumnya relevan dengan
+            kebutuhan industri,
+            dosen peduli, dan kesempatan magang yang intens membuat saya siap bekerja saat lulus. Jaringan alumni juga
+            aktif membantu
+            transisi ke dunia profesional saya bangga menjadi bagian dari kampus ini.”
+          </blockquote>
+
+          <div class="mt-6 flex flex-wrap gap-4">
+            <a href="#"
+              class="inline-flex items-center gap-2 bg-amber-400 text-slate-900 px-4 py-2 rounded-lg font-semibold hover:bg-amber-500 transition">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 8a6 6 0 11-8 0 6 6 0 018 0zM2 20a10 10 0 0120 0" />
+              </svg>
+              Hubungi Alumni
+            </a>
+
+            <a href="#" class="text-sm text-slate-500 hover:text-slate-700 transition self-center">Lihat cerita lainnya
+              →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section aria-label="Ajak Bergabung" class="relative py-20 overflow-hidden">
+    <div
+      class="hidden lg:block absolute -right-40 -top-40 w-96 h-96 rounded-full bg-gradient-to-br from-amber-400 to-yellow-600 opacity-10 transform rotate-12 pointer-events-none">
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div
+        class="bg-gradient-to-r from-indigo-900 via-sky-700 to-indigo-800 rounded-2xl p-8 md:p-12 shadow-xl text-white relative overflow-hidden">
+        <div class="md:flex md:items-center md:justify-between gap-8">
+          <!-- teks -->
+          <div class="md:flex-1">
+            <h2 class="text-2xl md:text-4xl font-extrabold leading-tight">
+              Gabung bersama kami — <span class="text-amber-400">Bangun masa depanmu di Universitas Eintio</span>
+            </h2>
+            <p class="mt-4 text-sky-100/90 max-w-2xl">
+              Program studi terakreditasi, fasilitas riset modern, dan jaringan industri yang kuat. Yuk daftar dan
+              jadikan langkah pertamamu menuju karier gemilang!
+            </p>
+            <div class="mt-6 grid grid-cols-3 gap-4 max-w-sm">
+              <div class="text-center">
+                <div class="text-amber-400 font-bold text-xl">20K+</div>
+                <div class="text-sky-100/80 text-xs">Alumni</div>
+              </div>
+              <div class="text-center">
+                <div class="text-amber-400 font-bold text-xl">50+</div>
+                <div class="text-sky-100/80 text-xs">Program Studi</div>
+              </div>
+              <div class="text-center">
+                <div class="text-amber-400 font-bold text-xl">200+</div>
+                <div class="text-sky-100/80 text-xs">Mitra Industri</div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 md:mt-0 md:w-96">
+            <form class="flex flex-col sm:flex-row gap-3 items-stretch">
+              <label for="cta-email" class="sr-only">Email</label>
+              <input id="cta-email" type="email" placeholder="Masukkan email kamu (opsional)"
+                class="flex-1 px-4 py-3 rounded-lg bg-white/10 placeholder-sky-100/70 focus:outline-none focus:ring-4 focus:ring-amber-400/30 border border-white/10 text-white" />
+
+              <button type="submit"
+                class="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-amber-400 text-slate-900 font-semibold hover:bg-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-400/40 transition">
+                Daftar Sekarang
+              </button>
+            </form>
+
+            <div class="mt-3 flex items-center gap-3 text-sm text-sky-100/80">
+              <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
+              </svg>
+              <span>Atau kunjungi <a href="#" class="underline text-white">Portal Mahasiswa</a> untuk informasi
+                lengkap</span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="absolute left-0 right-0 bottom-0 h-6 bg-gradient-to-t from-black/10 to-transparent pointer-events-none">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-200 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8 mb-12">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div
+              class="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-sky-600 to-indigo-600">
+              <span class="text-white font-bold">UN</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-white">Universitas Eintio</h3>
+            </div>
+          </div>
+          <p class="text-slate-400 text-sm">Membangun generasi unggul dan berkarakter.</p>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-white mb-4">Akademik</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="#" class="hover:text-white">Program Sarjana</a></li>
+            <li><a href="#" class="hover:text-white">Program Magister</a></li>
+            <li><a href="#" class="hover:text-white">Program Doktor</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-white mb-4">Informasi</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="#" class="hover:text-white">Berita</a></li>
+            <li><a href="#" class="hover:text-white">Pengumuman</a></li>
+            <li><a href="#" class="hover:text-white">Kontak</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-white mb-4">Kontak</h4>
+          <p class="text-slate-400 text-sm">Jl. Kemiri No.01, Salatiga</p>
+          <p class="text-slate-400 text-sm">info@eintio.ac.id</p>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-slate-400 text-sm">&copy; 2025 Universitas Eintio. All rights reserved.</p>
+        <div class="flex items-center gap-4">
+          <a href="#" class="text-slate-400 hover:text-white">Facebook</a>
+          <a href="#" class="text-slate-400 hover:text-white">Twitter</a>
+          <a href="#" class="text-slate-400 hover:text-white">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Menu toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileToggle?.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Carousel logic
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-item');
+    const indicators = document.querySelectorAll('.indicator');
+
+    function showSlide(n) {
+      slides.forEach(s => s.classList.remove('active'));
+      indicators.forEach(i => { i.classList.remove('active', 'bg-white'); i.classList.add('bg-white/50'); });
+      currentSlide = (n + slides.length) % slides.length;
+      slides[currentSlide].classList.add('active');
+      indicators[currentSlide].classList.remove('bg-white/50');
+      indicators[currentSlide].classList.add('active', 'bg-white');
+    }
+
+    function nextSlide() { showSlide(currentSlide + 1); }
+    function prevSlide() { showSlide(currentSlide - 1); }
+    function goToSlide(n) { showSlide(n); }
+
+    // Auto Sleding Lur
+    setInterval(nextSlide, 6000);
+  </script>
+</body>
+
 </html>
