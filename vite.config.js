@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import { globSync } from 'glob';
 import tailwindcss from '@tailwindcss/vite';
 
+
 // Mengambil semua file HTML dari folder src/page
 const pageFiles = globSync('src/page/*.html');
 
